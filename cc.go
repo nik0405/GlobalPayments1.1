@@ -249,31 +249,52 @@ func (t* SimpleChaincode) Run(stub shim.ChaincodeStubInterface, function string,
 // Query callback representing the query of a chaincode
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte,error) {
 	fmt.Printf("Query called, determining function")
-	var s []byte
+	
 	if function != "query" {
 		fmt.Printf("Function is query")
 		return nil, errors.New("Invalid query function name. Expecting \"query\"")
 	}
 	var custName string // Entities
 	var custAddressKey string  //Customer address key to read write in ledger as key value of address
+	var resp []byte
+
 	
-
-	//var err error
-
-	if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting name of the person to query")
+	if len(args) != 2 {
+		return nil, errors.New("Incorrect number of arguments. Expecting name of the person to query and balance or address")
 	}
 
 	custName = args[0]
-	custAddressKey = args[0] + "Add"
-	// Get the state from the ledger
+	//Check if balance is the query key
+	if(args[0] == "Balance" ){
+		custAvailBalbytes, err := stub.GetState(custName)
+		if err != nil {
+			jsonResp := "{\"Error\":\"Failed to get state for " + custName + "\"}"
+			return nil, errors.New(jsonResp)
+		}
+		if custAvailBalbytes == nil {
+			jsonResp := "{\"Error\":\"Nil amount for " + custName + "\"}"
+			return nil, errors.New(jsonResp)
+		}
+		jsonResp := "{\"Name\":\"" + custName + "\",\"Amount\":\"" + string(custAvailBalbytes) +"\"}"
+		fmt.Printf("Query Response:%s\n", jsonResp)
+		resp = custAvailBalbytes
+	}else if(args[1]  ==  "Address"){
+		custAddressKey = args[0] + "Add"
+		custAddressbytes, err := stub.GetState(custAddressKey)
+		if err != nil {
+			jsonResp := "{\"Error\":\"Failed to get state for " + custAddressKey + "\"}"
+			return nil, errors.New(jsonResp)
+		}
+		if custAddressbytes == nil {
+			jsonResp := "{\"Error\":\"No address for " + custName + "\"}"
+			return nil, errors.New(jsonResp)
+		}
+	    jsonResp := "{\"Name\":\"" + custName + "\",\"Address\":\"" + string(custAddressbytes) +"\"}"
+		fmt.Printf("Query Response:%s\n", jsonResp)
+		resp = custAddressbytes
+	}
 	
-	custAvailBalbytes,err := stub.GetState(custName)
-	
-	s = append(s,custAvailBalbytes[0:len(custAvailBalbytes)])
-	custAddressbytes,err := stub.GetState(custAddressKey)
-	s = append(s,custAddressbytes[0:len(custAddressbytes)])
-	return s, err
+	return resp, nil
 }
 
 func main() {
