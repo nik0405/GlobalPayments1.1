@@ -273,6 +273,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	custAddressbytes,err := stub.GetState(custAddressKey)
 	append(s,custAddressbytes)
 	return s, nil
+}
 
 func main() {
 	err := shim.Start(new(SimpleChaincode))
