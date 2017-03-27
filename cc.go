@@ -302,7 +302,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	output = append(output[1:],custAddressbytes[0])
 	
 	fmt.Printf("****************************************************************")
-	fmt.Printf(output)
+	fmt.Printf(string(output))
 	fmt.Printf("****************************************************************")
 
 	
