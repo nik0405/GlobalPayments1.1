@@ -241,6 +241,10 @@ func (t* SimpleChaincode) Run(stub shim.ChaincodeStubInterface, function string,
 		// Deletes an entity from its state
 		fmt.Printf("Function is delete")
 		return t.delete(stub, args)
+	}else if function == "updateAddress" {
+		//Update Address
+		fmt.Printf("Function is updated address")
+		return t.updateAddress(stub, args)
 	}
 
 	return nil, errors.New("Received unknown function invocation")
@@ -255,8 +259,8 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 		return nil, errors.New("Invalid query function name. Expecting \"query\"")
 	}
 	var custName string // Entities
-	var custAddressKey string  //Customer address key to read write in ledger as key value of address
-	var resp []byte
+	var custAddressKey string  //Customer address key to read write in ledger as key value of Address
+	var resp []byte		//response result based on query key
 
 	
 	if len(args) != 2 {
@@ -264,7 +268,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	}
 
 	custName = args[0]
-	//Check if balance is the query key
+	//Check query key for Balance and Address
 	if(args[1] == "Balance"){
 		custAvailBalbytes, err := stub.GetState(custName)
 		if err != nil {
@@ -278,7 +282,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 		jsonResp := "{\"Name\":\"" + custName + "\",\"Amount\":\"" + string(custAvailBalbytes) +"\"}"
 		fmt.Printf("Query Response:%s\n", jsonResp)
 		resp = custAvailBalbytes
-	}else if(args[1] == "Address"){
+    }else if(args[1] == "Address"){
 		custAddressKey = args[0] + "Add"
 		custAddressbytes, err := stub.GetState(custAddressKey)
 		if err != nil {
