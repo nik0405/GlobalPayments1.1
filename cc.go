@@ -270,9 +270,8 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	// Get the state from the ledger
 	fmt.Printf("***************")
 	custAvailBalbytes,err := stub.GetState(custName)
-	fmt.Printf("***************")
-	fmt.Printf(string(custAvailBalbytes))
-	return custAvailBalbytes,err
+	custAddress,err := stub.GetState(custName)
+	return custAddress,err
 }
 
 func main() {
