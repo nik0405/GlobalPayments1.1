@@ -247,12 +247,12 @@ func (t* SimpleChaincode) Run(stub shim.ChaincodeStubInterface, function string,
 }
 
 // Query callback representing the query of a chaincode
-func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte,error) {
+func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte,[]byte,error) {
 	fmt.Printf("Query called, determining function")
 	
 	if function != "query" {
 		fmt.Printf("Function is query")
-		return nil, errors.New("Invalid query function name. Expecting \"query\"")
+		return nil,nil, errors.New("Invalid query function name. Expecting \"query\"")
 	}
 	var custName string // Entities
 	var custAddressKey string  //Customer address key to read write in ledger as key value of address
@@ -261,17 +261,17 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	//var err error
 
 	if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting name of the person to query")
+		return nil,nil errors.New("Incorrect number of arguments. Expecting name of the person to query")
 	}
 
 	custName = args[0]
 	custAddressKey = args[0] + "Add"
-	fmt.Printf(custName)
 	// Get the state from the ledger
 	
-	//custAvailBalbytes,err := stub.GetState(custName)
-	custAddress,err := stub.GetState(custAddressKey)
-	return custAddress,err
+	custAvailBalbytes,err := stub.GetState(custName)
+	custAddressbytes,err := stub.GetState(custAddressKey)
+	
+	return custAvailBalbytes,custAddressbytes,nil
 }
 
 func main() {
