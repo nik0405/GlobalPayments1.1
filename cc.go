@@ -269,9 +269,10 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	// Get the state from the ledger
 	
 	custAvailBalbytes,err := stub.GetState(custName)
-	s = append(s,custAvailBalbytes[0])
+	
+	s = append(s,custAvailBalbytes[0:len(custAvailBalbytes)])
 	custAddressbytes,err := stub.GetState(custAddressKey)
-	s = append(s,custAddressbytes[0])
+	s = append(s,custAddressbytes[0:len(custAddressbytes)])
 	return s, err
 }
 
