@@ -258,7 +258,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	//var custAddressKey string  //Customer address key to read write in ledger as key value of address
 	
 
-	var err error
+	//var err error
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting name of the person to query")
