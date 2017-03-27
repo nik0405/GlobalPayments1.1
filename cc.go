@@ -266,7 +266,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 
 	custName = args[0]
 	custAddressKey = args[0] + "Add"
-	fmt.Printf(custname)
+	fmt.Printf(custName)
 	// Get the state from the ledger
 	
 	//custAvailBalbytes,err := stub.GetState(custName)
