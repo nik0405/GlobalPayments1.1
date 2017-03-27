@@ -269,46 +269,9 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 
 	// Get the state from the ledger
 	custAvailBalbytes, err := stub.GetState(custName)
+	fmt.Printf("***************")
 	fmt.Printf(custAvailBalbytes)
-	fmt.Printf("111111111111111111111111111111111111111111111111111111111")
-	if err != nil {
-		jsonResp := "{\"Error\":\"Failed to get state for " + custName + "\"}"
-		return nil, errors.New(jsonResp)
-	}
-
-	if custAvailBalbytes == nil {
-		jsonResp := "{\"Error\":\"Nil amount for " + custName + "\"}"
-		return nil, errors.New(jsonResp)
-	}
-
-	//jsonResp := "{\"Name\":\"" + custName + "\",\"Amount\":\"" + string(custAvailBalbytes) + "\"}"
-	//fmt.Printf("Query Response:%s\n", jsonResp)
-	
-	//getting customer address
-	custAddressbytes , err := stub.GetState(custAddressKey)
-	if err != nil {
-		jsonResp := "{\"Error\":\"Failed to get state for " + custAddressKey + "\"}"
-		return nil, errors.New(jsonResp)
-	}
-	if custAddressbytes == nil {
-		jsonResp := "{\"Error\":\"No address for " + custName + "\"}"
-		return nil, errors.New(jsonResp)
-	}
-    jsonResp := "{\"Name\":\"" + custName + "\",\"Amount\":\"" + string(custAvailBalbytes) + "\",\"Address\":\"" + string(custAddressbytes) +"\"}"
-	fmt.Printf("Query Response:%s\n", jsonResp)
-	//output := make([]byte,2);
-	//fmt.Printf(custAddressbytes[0])
-	output := make([]byte,2);
-	output = append(output[0:],custAvailBalbytes[0])
-	
-	output = append(output[1:],custAddressbytes[0])
-	
-	fmt.Printf("****************************************************************")
-	fmt.Printf(string(output))
-	fmt.Printf("****************************************************************")
-
-	
-	return output, nil
+	return nil,nil
 }
 
 func main() {
