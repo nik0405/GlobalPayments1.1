@@ -271,7 +271,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	custAvailBalbytes,err := stub.GetState(custName)
 	fmt.Printf("***************")
 	fmt.Printf(string(custAvailBalbytes))
-	return nil,nil
+	return nil,err
 }
 
 func main() {
