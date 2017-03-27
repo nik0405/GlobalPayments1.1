@@ -255,7 +255,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 		return nil, errors.New("Invalid query function name. Expecting \"query\"")
 	}
 	var custName string // Entities
-	var custAddressKey string  //Customer address key to read write in ledger as key value of address
+	//var custAddressKey string  //Customer address key to read write in ledger as key value of address
 	
 
 	var err error
@@ -265,7 +265,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	}
 
 	custName = args[0]
-	custAddressKey = args[0] + "Add"
+	//custAddressKey = args[0] + "Add"
 
 	// Get the state from the ledger
 	custAvailBalbytes, err := stub.GetState(custName)
