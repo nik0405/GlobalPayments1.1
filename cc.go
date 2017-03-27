@@ -265,7 +265,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 
 	custName = args[0]
 	//Check if balance is the query key
-	if(args[0] == "Balance" ){
+	if(args[1] == "Balance"){
 		custAvailBalbytes, err := stub.GetState(custName)
 		if err != nil {
 			jsonResp := "{\"Error\":\"Failed to get state for " + custName + "\"}"
@@ -278,7 +278,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 		jsonResp := "{\"Name\":\"" + custName + "\",\"Amount\":\"" + string(custAvailBalbytes) +"\"}"
 		fmt.Printf("Query Response:%s\n", jsonResp)
 		resp = custAvailBalbytes
-	}else if(args[1]  ==  "Address"){
+	}else if(args[1] == "Address"){
 		custAddressKey = args[0] + "Add"
 		custAddressbytes, err := stub.GetState(custAddressKey)
 		if err != nil {
